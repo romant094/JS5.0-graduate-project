@@ -19,14 +19,16 @@ phoneLink.forEach((link) => {
 });
 
 d.addEventListener('click', (event) => {
-    let t = event.target;
-    if ((t == popupEngineer || t == popupClose[1]) && t != popupEngineerContent) {
-        showHideModal(popupEngineer);
-    }
-    if ((t == popup || t == popupClose[0]) && t != popupContent) {
-        showHideModal(popup);
-    }
+    hideModal(popupEngineer, popupEngineerContent, popupClose[1], event);
+    hideModal(popup, popupContent, popupClose[0], event);
 });
+
+function hideModal(modalContainer, modalContent, closeButton, event) {
+    let t = event.target;
+    if ((t == modalContainer || t == closeButton) && t != modalContent) {
+        showHideModal(modalContainer);
+    }
+}
 
 function showHideModal(modal) {
     if (modal.style.display === 'none') {
