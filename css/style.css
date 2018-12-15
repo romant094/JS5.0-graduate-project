@@ -631,8 +631,13 @@ textarea:focus {
   margin-bottom: 3rem;
 }
 
-.works a[data-fancybox="gallery"] .lupa {
-  /* position: ; */
+.works a{
+  position: relative;
+}
+
+.works a .lupa {
+  position: absolute;
+  margin-bottom: 0;
   top: 0;
   left: 0;
   left: 50%;
@@ -644,7 +649,7 @@ textarea:focus {
   transition: ease 0.2s;
 }
 
-.works a[data-fancybox="gallery"]:hover .lupa {
+.works a:hover .lupa {
   opacity: 1;
 }
 
