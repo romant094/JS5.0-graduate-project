@@ -616,11 +616,11 @@ textarea:focus {
   color: #000000;
 }
 
-.decoration .external,
+/* .decoration .external,
 .decoration .rising,
 .decoration .roof {
   display: none;
-}
+} */
 
 /*Our works*/
 .works {

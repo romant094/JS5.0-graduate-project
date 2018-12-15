@@ -37,22 +37,28 @@ function showHideModal(modal) {
 
 // tabs
 let tabTriggers = d.querySelectorAll('.glazing_block'),
-    tabBlocks = d.querySelectorAll('.glazing .row');
+    tabBlocks = d.querySelectorAll('.glazing .row'),
+    tabDecorTriggers = d.querySelectorAll('.no_click'),
+    tabDecorBlocks = d.querySelectorAll('.decoration .decor-block');
 
-tabTriggers.forEach((trigger) => {
+tabsAction(tabTriggers, tabBlocks, 'active');
+tabsAction(tabDecorTriggers, tabDecorBlocks, 'after_click');
 
-});
-
-for (let i = 0; i < tabTriggers.length; i++) {
-    tabTriggers[i].addEventListener('click', function () {
-        for (j = 0; j < tabTriggers.length; j++) {
-            if (i != j) {
-                tabTriggers[j].classList.remove('active');
-                tabBlocks[j].classList.add('display-none');
+function tabsAction(triggers, contents, activeClass) {
+    for (let i = 0; i < triggers.length; i++) {
+        triggers[i].addEventListener('click', function () {
+            for (let j = 0; j < triggers.length; j++) {
+                if (i != j) {
+                    triggers[j].classList.remove(activeClass);
+                    contents[j].classList.add('display-none');
+                }
             }
-        }
 
-        this.classList.add('active');
-        tabBlocks[i].classList.remove('display-none');
-    });
+            this.classList.add(activeClass);
+            contents[i].classList.remove('display-none');
+
+            console.log(triggers[i]);
+            console.log(contents);
+        });
+    }
 }
