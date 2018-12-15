@@ -34,6 +34,10 @@ d.addEventListener('click', (event) => {
 
 function hideModal(modalContainer, modalContent, closeButton, event) {
     let t = event.target;
+    if (t.tagName == 'strong') {
+        t = t.parentNode;
+    }
+    console.log(t);
     if ((t == modalContainer || t == closeButton) && t != modalContent) {
         showHideModal(modalContainer);
     }
