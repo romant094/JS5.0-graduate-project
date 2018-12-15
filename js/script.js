@@ -8,9 +8,13 @@ let d = document,
     popupClose = d.querySelectorAll('.popup_close');
 
 // Modals
+
+setTimeout(() => { showHideModal(popup) }, 60000);
+
 popupEngineerBtn.addEventListener('click', () => {
     showHideModal(popupEngineer);
 });
+
 phoneLink.forEach((link) => {
     link.addEventListener('click', (event) => {
         event.preventDefault();
