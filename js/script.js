@@ -8,8 +8,13 @@ let d = document,
     popupClose = d.querySelectorAll('.popup_close');
 
 // Modals
+function showInSixtySeconds() {
+    setTimeout(() => {
+        showHideModal(popup)
+    }, 60000);
+}
 
-setTimeout(() => { showHideModal(popup) }, 60000);
+showInSixtySeconds();
 
 popupEngineerBtn.addEventListener('click', () => {
     showHideModal(popupEngineer);
