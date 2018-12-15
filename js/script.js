@@ -56,9 +56,6 @@ function tabsAction(triggers, contents, activeClass) {
 
             this.classList.add(activeClass);
             contents[i].classList.remove('display-none');
-
-            console.log(triggers[i]);
-            console.log(contents);
         });
     }
 }
