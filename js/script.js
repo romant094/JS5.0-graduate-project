@@ -31,8 +31,28 @@ function hideModal(modalContainer, modalContent, closeButton, event) {
 }
 
 function showHideModal(modal) {
-    modal.classList.toggle('display-block');
     modal.classList.toggle('display-none');
-    d.body.classList.toggle('overflow-auto');
     d.body.classList.toggle('overflow-hidden');
+}
+
+// tabs
+let tabTriggers = d.querySelectorAll('.glazing_block'),
+    tabBlocks = d.querySelectorAll('.glazing .row');
+
+tabTriggers.forEach((trigger) => {
+
+});
+
+for (let i = 0; i < tabTriggers.length; i++) {
+    tabTriggers[i].addEventListener('click', function () {
+        for (j = 0; j < tabTriggers.length; j++) {
+            if (i != j) {
+                tabTriggers[j].classList.remove('active');
+                tabBlocks[j].classList.add('display-none');
+            }
+        }
+
+        this.classList.add('active');
+        tabBlocks[i].classList.remove('display-none');
+    });
 }
