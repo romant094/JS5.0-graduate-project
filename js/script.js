@@ -31,9 +31,8 @@ function hideModal(modalContainer, modalContent, closeButton, event) {
 }
 
 function showHideModal(modal) {
-    if (modal.style.display === 'none') {
-        modal.style.display = 'block';
-    } else {
-        modal.style.display = 'none';
-    }
+    modal.classList.toggle('display-block');
+    modal.classList.toggle('display-none');
+    d.body.classList.toggle('overflow-auto');
+    d.body.classList.toggle('overflow-hidden');
 }

@@ -1,3 +1,24 @@
+/*special classes*/
+.display-none{
+  display: none;
+}
+
+.display-block{
+  display: block;
+}
+
+.display-flex{
+  display: flex;
+}
+
+.overflow-hidden{
+  overflow: hidden;
+}
+
+.overflow-auto{
+  overflow: auto;
+}
+
 /*Fonts Family*/
 /*Colors*/
 /*Basic settings*/
@@ -842,7 +863,6 @@ textarea:focus {
 .popup,
 .popup_engineer,
 .popup_calc_end {
-  display: none;
   position: fixed;
   top: 0;
   left: 0;
