@@ -177,7 +177,7 @@ let calcStart = d.querySelectorAll('.popup_calc_btn'),
     popupCalcClose = d.querySelector('.popup_calc_close'),
     popupCalcProfile = d.querySelector('.popup_calc_profile'),
     popupCalcProfileContent = d.querySelector('.popup_calc_profile_content'),
-    popupCalcProfileClose = d.querySelector('.popup_calc_profile_close'),    
+    popupCalcProfileClose = d.querySelector('.popup_calc_profile_close'),
     popupCalcEnd = d.querySelector('.popup_calc_end'),
     popupCalcEndContent = d.querySelector('.popup_calc_end .popup_content'),
     popupCalcEndClose = d.querySelector('.popup_calc_end_close'),
@@ -193,7 +193,7 @@ calcStart.forEach((button) => {
 
 tabsAction(balconType, balconTypeImg, 'do_image_more');
 
-for (let i = 0; i < balconType.length; i++){
+for (let i = 0; i < balconType.length; i++) {
     balconType[i].addEventListener('click', () => {
         calcCost.balconyForm = i;
     })
@@ -206,14 +206,8 @@ onlyDigits(calcWidth);
 onlyDigits(calcHeight);
 
 function onlyDigits(element) {
-    element.addEventListener('keydown', (event) => {
-        if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || (event.keyCode >= 35 && event.keyCode <= 40)) {
-            return;
-        } else {
-            if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
-                event.preventDefault();
-            }
-        }
+    element.addEventListener('keyup', function() {
+        this.value = this.value.replace(/[^0-9]+/g, '');
     });
 }
 
@@ -223,7 +217,7 @@ popupCalcButton.addEventListener('click', () => {
     if (calcWidth.value == '' || calcHeight == '') {
         alert('Значения ширины и высоты не могут быть пустыми!')
     } else {
-        calcCost.width = +calcWidth.value;        
+        calcCost.width = +calcWidth.value;
         calcCost.height = +calcHeight.value;
         showHideModal(popupCalc);
         showHideModal(popupCalcProfile);
@@ -242,17 +236,15 @@ let profileCold = d.querySelector('#profile__cold'),
 profileCold.addEventListener('change', () => {
     onlyOneSelected(profileCold, profileWarm);
     if (profileCold.checked) {
-        calcCost.profileType = 'cold';   
+        calcCost.profileType = 'cold';
     }
-    console.log(calcCost);
 });
 
 profileWarm.addEventListener('change', () => {
     onlyOneSelected(profileWarm, profileCold);
     if (profileWarm.checked) {
-        calcCost.profileType = 'warm';        
+        calcCost.profileType = 'warm';
     }
-    console.log(calcCost);
 });
 
 function onlyOneSelected(first, second) {
@@ -270,10 +262,10 @@ popupCalcProfileButton.addEventListener('click', () => {
     if (!profileCold.checked && !profileWarm.checked) {
         alert('Выберите тип профиля!')
     } else {
-        showHideModal(popupCalcProfile);        
+        showHideModal(popupCalcProfile);
         showHideModal(popupCalcEnd);
     }
-        
+
 });
 
 d.addEventListener('click', (event) => {
@@ -286,17 +278,14 @@ d.addEventListener('click', (event) => {
 
 popupCalcClose.addEventListener('click', () => {
     clearData();
-    console.log(calcCost);
 });
 
 popupCalcProfileClose.addEventListener('click', () => {
     clearData();
-    console.log(calcCost);
 });
 
 popupCalcEndClose.addEventListener('click', () => {
     clearData();
-    console.log(calcCost);
 });
 
 function clearData() {
@@ -306,11 +295,31 @@ function clearData() {
     profileWarm.checked = false;
     profileCold.checked = false;
     viewType.selectedIndex = 0;
-    for (let i = 0; i < balconType.length; i++){
+    for (let i = 0; i < balconType.length; i++) {
         if (i == 0) {
-            balconType[i].classList.add('do_image_more');    
+            balconType[i].classList.add('do_image_more');
         } else {
-            balconType[i].classList.remove('do_image_more');    
+            balconType[i].classList.remove('do_image_more');
         }
     }
 }
+
+//forms AJAX
+
+let mainForms = d.querySelectorAll('.main_form'),
+    formInput = d.querySelectorAll('.form_input'),
+    statusMessage = {
+        sending: 'Выполняется отправка...',
+        success: 'Отправка успешна!',
+        failure: 'При отправке что-то пошло не так...'
+    };
+
+for (let i = 0; i < formInput.length; i++) {
+    if (formInput[i].getAttribute('name') === 'user_phone') {
+        onlyDigits(formInput[i]);
+    }
+}
+
+let request = new XMLHttpRequest();
+
+// request.open();
