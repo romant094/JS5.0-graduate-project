@@ -1,6 +1,6 @@
 /*special classes*/
 .display-none{
-  display: none;
+  display: none !important;
 }
 
 .display-block{
@@ -934,7 +934,6 @@ textarea:focus {
 }
 
 .popup_calc {
-  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -974,7 +973,6 @@ textarea:focus {
 }
 
 .popup_calc_content .big_img img {
-  display: none;
   margin-bottom: 3rem;
   width: 30rem;
 }
@@ -1021,7 +1019,6 @@ textarea:focus {
 }
 
 .popup_calc_profile {
-  display: none;
   position: fixed;
   top: 0;
   left: 0;

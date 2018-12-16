@@ -27,17 +27,8 @@ phoneLink.forEach((link) => {
     });
 });
 
-d.addEventListener('click', (event) => {
-    hideModal(popupEngineer, popupEngineerContent, popupClose[1], event);
-    hideModal(popup, popupContent, popupClose[0], event);
-});
-
 function hideModal(modalContainer, modalContent, closeButton, event) {
     let t = event.target;
-    if (t.tagName == 'strong') {
-        t = t.parentNode;
-    }
-    console.log(t);
     if ((t == modalContainer || t == closeButton) && t != modalContent) {
         showHideModal(modalContainer);
     }
@@ -59,7 +50,9 @@ tabsAction(tabDecorTriggers, tabDecorBlocks, 'after_click');
 
 function tabsAction(triggers, contents, activeClass) {
     for (let i = 0; i < triggers.length; i++) {
-        triggers[i].addEventListener('click', function () {
+        triggers[i].addEventListener('click', function (event) {
+            event.preventDefault();
+
             for (let j = 0; j < triggers.length; j++) {
                 if (i != j) {
                     triggers[j].classList.remove(activeClass);
@@ -116,7 +109,6 @@ d.addEventListener('click', (event) => {
     }
 });
 
-// timer
 // timer
 let deadline = '2019-07-04';
 
@@ -176,3 +168,149 @@ function setTimer(id, endtime) {
 }
 
 setTimer('timer', deadline);
+
+//calc
+
+let calcStart = d.querySelectorAll('.popup_calc_btn'),
+    popupCalc = d.querySelector('.popup_calc'),
+    popupCalcContent = d.querySelector('.popup_calc_content'),
+    popupCalcClose = d.querySelector('.popup_calc_close'),
+    popupCalcProfile = d.querySelector('.popup_calc_profile'),
+    popupCalcProfileContent = d.querySelector('.popup_calc_profile_content'),
+    popupCalcProfileClose = d.querySelector('.popup_calc_profile_close'),    
+    popupCalcEnd = d.querySelector('.popup_calc_end'),
+    popupCalcEndContent = d.querySelector('.popup_calc_end .popup_content'),
+    popupCalcEndClose = d.querySelector('.popup_calc_end_close'),
+    balconType = d.querySelectorAll('.balcon_icons a img'),
+    balconTypeImg = d.querySelectorAll('.big_img img'),
+    calcCost = {};
+
+calcStart.forEach((button) => {
+    button.addEventListener('click', () => {
+        showHideModal(popupCalc);
+    });
+});
+
+tabsAction(balconType, balconTypeImg, 'do_image_more');
+
+for (let i = 0; i < balconType.length; i++){
+    balconType[i].addEventListener('click', () => {
+        calcCost.balconyForm = i;
+    })
+}
+
+let calcWidth = d.querySelector('#width'),
+    calcHeight = d.querySelector('#height');
+
+onlyDigits(calcWidth);
+onlyDigits(calcHeight);
+
+function onlyDigits(element) {
+    element.addEventListener('keydown', (event) => {
+        if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || (event.keyCode >= 35 && event.keyCode <= 40)) {
+            return;
+        } else {
+            if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                event.preventDefault();
+            }
+        }
+    });
+}
+
+let popupCalcButton = d.querySelector('.popup_calc_button');
+
+popupCalcButton.addEventListener('click', () => {
+    if (calcWidth.value == '' || calcHeight == '') {
+        alert('Значения ширины и высоты не могут быть пустыми!')
+    } else {
+        calcCost.width = +calcWidth.value;        
+        calcCost.height = +calcHeight.value;
+        showHideModal(popupCalc);
+        showHideModal(popupCalcProfile);
+    }
+});
+
+let viewType = d.querySelector('#view_type');
+
+viewType.addEventListener('change', () => {
+    calcCost.type = viewType.options[viewType.selectedIndex].value;
+});
+
+let profileCold = d.querySelector('#profile__cold'),
+    profileWarm = d.querySelector('#profile__warm');
+
+profileCold.addEventListener('change', () => {
+    onlyOneSelected(profileCold, profileWarm);
+    if (profileCold.checked) {
+        calcCost.profileType = 'cold';   
+    }
+    console.log(calcCost);
+});
+
+profileWarm.addEventListener('change', () => {
+    onlyOneSelected(profileWarm, profileCold);
+    if (profileWarm.checked) {
+        calcCost.profileType = 'warm';        
+    }
+    console.log(calcCost);
+});
+
+function onlyOneSelected(first, second) {
+    if (first.checked) {
+        if (second.checked) {
+            second.checked = false;
+        }
+    }
+}
+
+let popupCalcProfileButton = d.querySelector('.popup_calc_profile_button');
+
+popupCalcProfileButton.addEventListener('click', () => {
+    calcCost.type = 'tree';
+    if (!profileCold.checked && !profileWarm.checked) {
+        alert('Выберите тип профиля!')
+    } else {
+        showHideModal(popupCalcProfile);        
+        showHideModal(popupCalcEnd);
+    }
+        
+});
+
+d.addEventListener('click', (event) => {
+    hideModal(popupEngineer, popupEngineerContent, popupClose[1], event);
+    hideModal(popup, popupContent, popupClose[0], event);
+    hideModal(popupCalc, popupCalcContent, popupCalcClose, event);
+    hideModal(popupCalcProfile, popupCalcProfileContent, popupCalcProfileClose, event);
+    hideModal(popupCalcEnd, popupCalcEndContent, popupCalcEndClose, event);
+});
+
+popupCalcClose.addEventListener('click', () => {
+    clearData();
+    console.log(calcCost);
+});
+
+popupCalcProfileClose.addEventListener('click', () => {
+    clearData();
+    console.log(calcCost);
+});
+
+popupCalcEndClose.addEventListener('click', () => {
+    clearData();
+    console.log(calcCost);
+});
+
+function clearData() {
+    calcCost = {};
+    calcWidth.value = '';
+    calcHeight.value = '';
+    profileWarm.checked = false;
+    profileCold.checked = false;
+    viewType.selectedIndex = 0;
+    for (let i = 0; i < balconType.length; i++){
+        if (i == 0) {
+            balconType[i].classList.add('do_image_more');    
+        } else {
+            balconType[i].classList.remove('do_image_more');    
+        }
+    }
+}
