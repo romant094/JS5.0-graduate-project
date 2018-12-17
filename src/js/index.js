@@ -8,14 +8,13 @@ let d = document,
 	popupClose = d.querySelectorAll('.popup_close');
 
 // Modals
-// TODO remove comments showInSixtySeconds() before final check
-/*function showInSixtySeconds() {
+function showInSixtySeconds() {
 	setTimeout(() => {
 		showHideModal(popup)
 	}, 60000);
 }
 
-showInSixtySeconds(); */
+showInSixtySeconds();
 
 popupEngineerBtn.addEventListener('click', () => {
 	showHideModal(popupEngineer);
@@ -293,7 +292,6 @@ popupCalcEndClose.addEventListener('click', () => {
 	clearData();
 });
 
-// TODO after form send clearData
 function clearData() {
 	calcCost = {};
 	calcWidth.value = '';
