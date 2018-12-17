@@ -191,7 +191,8 @@ let calcStart = d.querySelectorAll('.popup_calc_btn'),
 
 calcStart.forEach((button) => {
 	button.addEventListener('click', () => {
-		showHideModal(popupCalc);
+        showHideModal(popupCalc);
+        calcCost.balconyForm = 0;
 	});
 });
 
@@ -347,8 +348,13 @@ popupEngineerForm.addEventListener('submit', (event) => {
 	ajaxSend(popupEngineerForm, popupEngineer);
 });
 
-function ajaxSend(item, container) {
-	let ajaxSendForm = item,
+calcEndForm.addEventListener('submit', (event) => {
+	event.preventDefault();
+	ajaxSend(calcEndForm, popupCalcEnd, 'calc');
+});
+
+function ajaxSend(form, container, calc) {
+	let ajaxSendForm = form,
 		ajaxSendFormInput = ajaxSendForm.querySelectorAll('input');
 	
 	ajaxSendForm.appendChild(statusMessage);
@@ -362,15 +368,20 @@ function ajaxSend(item, container) {
 			request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 			
 			
-			let obj = {};
+            let obj = {};
 			formData.forEach(function (value, key) {
 				obj[key] = value;
 			});
+            if (calc) {
+                for (let prop in calcCost) {
+                    obj[prop] = calcCost[prop];
+                  }
+            }
+            
 			let json = JSON.stringify(obj);
+            request.send(json);
 			
-			request.send(json);
-			
-			request.addEventListener('readystatechange', function () {
+            request.addEventListener('readystatechange', function () {
 				if (request.readyState < 4) {
 					resolve();
 				} else if (request.readyState === 4 && request.status == 200) {
@@ -388,16 +399,18 @@ function ajaxSend(item, container) {
 		});
 	}
 	
-	postData()
-		.then(() => statusMessage.innerHTML = message.sending)
-		.then(() => statusMessage.innerHTML = message.success)
-		.then(() => {
-			if (container != null) {
-				setTimeout(() => {
-					showHideModal(container)
-				}, 2000)
-			}
-		})
-		.catch(() => statusMessage.innerHTML = message.failure)
+    postData()
+        .then(() => statusMessage.innerHTML = message.sending)
+        .then(() => statusMessage.innerHTML = message.success)
+        .then(() => {
+            if (container != null) {
+                setTimeout(() => {
+                    showHideModal(container);
+                    clearData();
+                    form.removeChild(statusMessage);
+                }, 2000);
+            }
+        })
+        .catch(() => statusMessage.innerHTML = message.failure)
 		.then(clearInput);
 }
