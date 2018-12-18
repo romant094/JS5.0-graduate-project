@@ -190,8 +190,8 @@ let calcStart = d.querySelectorAll('.popup_calc_btn'),
 
 calcStart.forEach((button) => {
 	button.addEventListener('click', () => {
-        showHideModal(popupCalc);
-        calcCost.balconyForm = 0;
+		showHideModal(popupCalc);
+		calcCost.balconyForm = 0;
 	});
 });
 
@@ -206,11 +206,16 @@ for (let i = 0; i < balconType.length; i++) {
 let calcWidth = d.querySelector('#width'),
 	calcHeight = d.querySelector('#height');
 
-onlyDigits(calcWidth);
-onlyDigits(calcHeight);
+onlyDigits(calcWidth, 0);
+onlyDigits(calcHeight, 0);
 
-function onlyDigits(element) {
+function onlyDigits(element, phone) {
 	element.addEventListener('keyup', function () {
+		if (phone == 1) {
+			if (this.value.length > 10) {
+				this.value = this.value.substring(0, 11);
+			}
+		}
 		this.value = this.value.replace(/[^0-9]+/g, '');
 	});
 }
@@ -228,10 +233,20 @@ popupCalcButton.addEventListener('click', () => {
 	}
 });
 
-let viewType = d.querySelector('#view_type');
+let viewType = d.querySelector('#view_type'),
+	coldImg = popupCalcProfile.querySelector('img'),
+	coldCheckbox = popupCalcProfile.querySelector('label');
+
 
 viewType.addEventListener('change', () => {
 	calcCost.type = viewType.options[viewType.selectedIndex].value;
+	if (viewType.options[viewType.selectedIndex].value === 'plastic') {
+		coldImg.classList.add('display-none');
+		coldCheckbox.classList.add('display-none');
+	} else {
+		coldImg.classList.remove('display-none');
+		coldCheckbox.classList.remove('display-none');
+	}
 });
 
 let profileCold = d.querySelector('#profile__cold'),
@@ -325,7 +340,7 @@ statusMessage.classList.add('status-message');
 
 for (let i = 0; i < formInput.length; i++) {
 	if (formInput[i].getAttribute('name') === 'user_phone') {
-		onlyDigits(formInput[i]);
+		onlyDigits(formInput[i], 1);
 	}
 }
 
@@ -366,20 +381,20 @@ function ajaxSend(form, container, calc) {
 			request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 			
 			
-            let obj = {};
+			let obj = {};
 			formData.forEach(function (value, key) {
 				obj[key] = value;
 			});
-            if (calc) {
-                for (let prop in calcCost) {
-                    obj[prop] = calcCost[prop];
-                  }
-            }
-            
-			let json = JSON.stringify(obj);
-            request.send(json);
+			if (calc) {
+				for (let prop in calcCost) {
+					obj[prop] = calcCost[prop];
+				}
+			}
 			
-            request.addEventListener('readystatechange', function () {
+			let json = JSON.stringify(obj);
+			request.send(json);
+			
+			request.addEventListener('readystatechange', function () {
 				if (request.readyState < 4) {
 					resolve();
 				} else if (request.readyState === 4 && request.status == 200) {
@@ -397,18 +412,18 @@ function ajaxSend(form, container, calc) {
 		});
 	}
 	
-    postData()
-        .then(() => statusMessage.innerHTML = message.sending)
-        .then(() => statusMessage.innerHTML = message.success)
-        .then(() => {
-            if (container != null) {
-                setTimeout(() => {
-                    showHideModal(container);
-                    clearData();
-                    form.removeChild(statusMessage);
-                }, 2000);
-            }
-        })
-        .catch(() => statusMessage.innerHTML = message.failure)
+	postData()
+		.then(() => statusMessage.innerHTML = message.sending)
+		.then(() => statusMessage.innerHTML = message.success)
+		.then(() => {
+			if (container != null) {
+				setTimeout(() => {
+					showHideModal(container);
+					clearData();
+					form.removeChild(statusMessage);
+				}, 2000);
+			}
+		})
+		.catch(() => statusMessage.innerHTML = message.failure)
 		.then(clearInput);
 }
