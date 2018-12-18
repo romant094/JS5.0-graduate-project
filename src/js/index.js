@@ -209,6 +209,21 @@ let calcWidth = d.querySelector('#width'),
 onlyDigits(calcWidth, 0);
 onlyDigits(calcHeight, 0);
 
+minMaxValues(calcWidth, 200, 1000);
+minMaxValues(calcHeight, 500, 2000);
+
+function minMaxValues(elem, min, max) {
+	elem.addEventListener('keyup', function () {
+		if (+this.value < min) {
+			this.value = min;
+		}
+	
+		if (+this.value > max) {
+			this.value = max;
+		}
+	})
+}
+
 function onlyDigits(element, phone) {
 	element.addEventListener('keyup', function () {
 		if (phone == 1) {
